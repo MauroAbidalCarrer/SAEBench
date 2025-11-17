@@ -1076,6 +1076,7 @@ def multiple_evals(
                 max_delay=30.0,
             )
             def create_activation_store():
+                sae.cfg.metadata.context_size = context_size
                 return ActivationsStore.from_sae(
                     current_model,  # type: ignore
                     sae,

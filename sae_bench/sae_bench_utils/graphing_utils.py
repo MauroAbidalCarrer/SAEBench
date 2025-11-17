@@ -748,7 +748,7 @@ def plot_2var_graph(
     ax.set_title(title)
 
     # x log
-    ax.set_xscale("log")
+    # ax.set_xscale("log")
 
     if baseline_value is not None:
         ax.axhline(baseline_value, color="red", linestyle="--", label=baseline_label)
@@ -874,7 +874,7 @@ def plot_2var_graph_dict_size(
         ax.set_ylim(*ylims)
 
     # log scale
-    ax.set_xscale("log")
+    # ax.set_xscale("log")
 
     plt.tight_layout()
 
