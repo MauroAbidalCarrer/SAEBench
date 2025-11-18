@@ -748,7 +748,11 @@ def plot_2var_graph(
     ax.set_title(title)
 
     # x log
-    # ax.set_xscale("log")
+    if "l0_values" in locals() and any(map(lambda v: v > 0, l0_values)):
+        print("Setting x scale to log because there is at least one positive l0_value")
+        ax.set_xscale("log")
+    else:
+        print("Not setting x scale to log ")
 
     if baseline_value is not None:
         ax.axhline(baseline_value, color="red", linestyle="--", label=baseline_label)
@@ -824,7 +828,7 @@ def plot_2var_graph_dict_size(
 
     # Iterate over each unique dictionary size
     handles, labels = [], []
-
+    set_x_scale_to_log = False
     for dict_size in unique_sizes:
         # Filter data points for the current dictionary size
         size_data = {k: v for k, v in results.items() if v["d_sae"] == dict_size}
@@ -837,6 +841,7 @@ def plot_2var_graph_dict_size(
         # Plot data points with the assigned marker and color
         for l0, metric, sae_class in zip(l0_values, custom_metric_values, sae_classes):
             marker = trainer_markers[sae_class]  # type: ignore
+            set_x_scale_to_log = set_x_scale_to_log or metric > 0
             ax.scatter(
                 l0,
                 metric,
@@ -857,7 +862,6 @@ def plot_2var_graph_dict_size(
     ax.set_xlabel("L0 (Sparsity)")
     ax.set_ylabel(y_label)
     ax.set_title(title)
-
     if baseline_value:
         ax.axhline(baseline_value, color="red", linestyle="--", label=baseline_label)
         labels.append(baseline_label)
@@ -874,7 +878,11 @@ def plot_2var_graph_dict_size(
         ax.set_ylim(*ylims)
 
     # log scale
-    # ax.set_xscale("log")
+    if set_x_scale_to_log:
+        print("Setting x scale to log because at least one METRIC is positive")
+        ax.set_xscale("log")
+    else:
+        print("NOT Setting x scale to log because no METRIC is positive")
 
     plt.tight_layout()
 
